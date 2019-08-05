@@ -17,7 +17,11 @@ class ContentController extends Controller
 
 
     public function showabout(){
-        return view('frontend.about');
+
+        $divisions = DB::table('division_tables')
+        ->select('*')->get();
+
+        return view('frontend.about', compact('divisions'));
     }
 
 

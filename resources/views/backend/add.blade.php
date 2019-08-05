@@ -17,7 +17,7 @@
 
 
 </div>
-<form method="POST" action="{{ route('backend.store')}}" autocomplete="off" enctype="multipart/form-data">
+<form method="POST" action="{{ route('backend.store')}}" autocomplete="off">
     {{-- @method('POST') --}}
     {{-- @csrf --}}
 
@@ -74,10 +74,31 @@
             <input type="file" class="form-control-file" id="exampleFormControlFile1" name="img_three">
         </div>
 
+
+        <div class="form-group">
+
+            <label for="inputEmail4">lat</label>
+            <input type="text" class="form-control" id="inputEmail4" placeholder="" name="lat">
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="inputEmail4">long</label>
+            <input type="text" class="form-control" id="inputEmail4" placeholder="" name="long">
+          </div>
+
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">Content</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" name="content1" rows="3" value=""></textarea>
+        </div>
+
+
         <div class="form-group">
             <label for="exampleFormControlTextarea1">Content</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-          </div>
+            <textarea class="form-control" id="exampleFormControlTextarea1" name="content2" rows="3" value=""></textarea>
+        </div>
+
 
           <div class="form-group">
             <div class="form-check">

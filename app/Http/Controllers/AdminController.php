@@ -13,6 +13,7 @@ use App\morecontent;
 use App\loginuser;
 use App\twocontent;
 use App\placenameTable;
+use App\twocontentdetail;
 
 class AdminController extends Controller
 {
@@ -56,7 +57,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        $adddata = DB::table('placename_tables')
+        $adddattwocontenta = DB::table('placename_tables')
         ->join('division_tables', 'division_tables.id', '=', 'placename_tables.did')
         ->join('categories', 'categories.id', '=', 'placename_tables.cid')
         // ->join('twocontents', 'placenames.id', '=', 'twocontents.pid')
@@ -79,52 +80,109 @@ class AdminController extends Controller
             'Category' => 'required',
             'division_Name' => 'required',
             'img_one' => 'required',
+            'lat'=> 'required',
+            'long' => 'required',
             'img_two' => 'required',
-            'img_three' => 'required'
+            'img_three' => 'required',
+            'content1' => 'required',
+            'content2' => 'required'
+
         ]);
 
-        $adddata = DB::table('placenames')
-        ->join('divisions', 'divisions.id', '=', 'placenames.did')
-        ->join('categories', 'categories.id', '=', 'placenames.cid')
-        // ->join('twocontents', 'placenames.id', '=', 'twocontents.pid')
-        ->select('placenames.*','divisions.*', 'categories.*')
-        // ->where('placenames.id', '=', $id)
-        ->get();
+        // $categoryMatch =  DB::table('placename_tables')
+        // ->join('categories', 'categories.id', '=', 'placename_tables.cid')
+        // ->select('placename_tables.*', 'categories.*');
 
-        $categoryName = $request->categoryName;
-        $divisionName = $request->divisionName;
 
-        foreach($adddata as $add){
-            if($add->Category == $categoryName && $add->division_Name == $divisionName){
-                $image_one = $request->file('img_one');
-                $image_two = $request->file('img_two');
-                $image_three = $request->file('img_three');
 
-                $extension_one = $image_one->getClientOriginalExtension();
-                $extension_two = $image_two->getClientOriginalExtension();
-                $extension_three = $image_three->getClientOriginalExtension();
+        // $adddata = DB::table('placename_tables')
+        // ->join('division_tables', 'division_tables.id', '=', 'placename_tables.did')
+        // ->join('categories', 'categories.id', '=', 'placename_tables.cid')
+        // // ->join('twocontents', 'placename_tables.id', '=', 'twocontents.pid')
+        // ->select('placename_tables.*','division_tables.*', 'categories.*')
+        // // ->where('placename_tables.id', '=', $id)
+        // ->get();
 
-                request()->image_one->move(public_path('images'),$image_one->getClientOriginalName());
-                request()->image_two->move(public_path('images'),$image_two->getClientOriginalName());
-                request()->image_three->move(public_path('images'),$image_three->getClientOriginalName());
+        $division = DB::table('division_tables')->get();
+        // echo $division;
 
-                $editdatas =placename::all();
+        $category = DB::table('categories')->get();
 
-        $editdatas->placeName = $request->get('placeName');
-        $editdatas->cid = $add->cid;
-        $editdatas->did = $add->did;
-        $editdatas->img = $request->get('img_one');
-        $editdatas->save();
-        $two_content =  twocontent::all();
-        $two_content->first()->update(['img' => 'image_two']);
-        $two_content->last()->update(['img' => 'image_three']);
+        $categoryName = $request->Category;
+        $divisionName = $request->division_Name;
+
+$placename = DB::table('placename_tables')->get();
+
+
+
+        // echo $adddata->toJson();
+
+        // foreach($adddata as $add){
+            // echo $add->division_Name . ';' . $add->Category . ' === ' . $categoryName . '+' . $divisionName . '<br>';
+            // if($add->Category == $categoryName && $add->division_Name == $divisionName){
+                // $image_one = $request->file('img_one');
+                // $image_two = $request->file('img_two');
+                // $image_three = $request->file('img_three');
+
+                // $extension_one = $image_one->getClientOriginalExtension();
+                // $extension_two = $image_two->getClientOriginalExtension();
+                // $extension_three = $image_three->getClientOriginalExtension();
+
+                // request()->image_one->move(public_path('images'),$image_one->getClientOriginalName());
+                // request()->image_two->move(public_path('images'),$image_two->getClientOriginalName());
+                // request()->image_three->move(public_path('images'),$image_three->getClientOriginalName());
+
+                // echo "yout tal";
+                // $editdatas =placename::create();
+
+
+
+        // $placenameTable->did = $request->get('division_Name');
+        $placenameTable = new placenameTable();
+        $twocontentdetails = new twocontentdetail();
+        foreach($division as $div)
+            if($div->division_Name == $divisionName){
+                $placenameTable->did = $div->id;
+
+            }
+
+            foreach($category as $cat)
+            if($cat->Category == $categoryName){
+                $placenameTable->cid = $cat->id;
+
+            }
+
+
+
+
+        $placenameTable->placeName = $request->get('placeName');
+        // $placenameTable->cid = $request->get('Category');
+
+        $placenameTable->img = $request->get('img_one');
+        $placenameTable->placename_lat =  $request->get('lat');
+        $placenameTable->placeName_long =  $request->get('long');
+        $placenameTable->save();
+        // $two_content =  twocontent::create();
+        // $twocontent->first()->update(['img' => 'image_two']);
+        // $twocontent->last()->update(['img' => 'image_three']);
+ foreach($placename as $pname)
+
+        $twocontentdetails->pid = $pname->id+1;
+        $twocontentdetails->img1 = $request->get('img_two');
+        $twocontentdetails->content1 = $request->get('content1');
+        $twocontentdetails->img2 = $request->get('img_three');
+        $twocontentdetails->content2 = $request->get('content2');
+        $twocontentdetails->save();
+
+
+
 
         return redirect('/backend/index')->with('success','Contact Updates');
 
 
             }
-        }
-            }
+        // }
+    // }
     /**
      * Display the specified resource.
      *

@@ -1,7 +1,7 @@
 @extends('frontend.main')
 @section('content')
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Travel Guide for Myanmar</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -13,7 +13,7 @@
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown link
+                Division/State
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     @foreach ($division as $item)
@@ -160,20 +160,35 @@
 @endsection
 
 @section('script')
-<script>
+{{-- <script>
         var map;
-        var latitude = ((document.getElementById('lat')||{}).value);
-        var longtitude = ((document.getElementById('long')||{}).value);
 
+
+        var locate = new google.maps.LatLng(longtitude, latitude);
         function initMap() {
             var locate = new google.maps.LatLng(latitude,longtitude);
           map = new google.maps.Map(document.getElementById('map'), {
             center: locate,
-            zoom: 8
+            zoom: 10
           });
         }
-      </script>
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCB_oTREnz7oebRDP_8w45z1DhoVCSTUBo&callback=initMap" async defer></script><br><br>
+</script> --}}
 
-      <div></div>
+    <script>
+
+        mapboxgl.accessToken = 'pk.eyJ1IjoidGhpaGEyMDIiLCJhIjoiY2p5bGZmZnBiMDd0bzNscm9jM2xpYjA2MSJ9.2ECDBiamZ5zTSgngsoaRRw';
+
+        var latitude = ((document.getElementById('lat')||{}).value);
+        var longtitude = ((document.getElementById('long')||{}).value);
+        var locate = new mapboxgl.geometry.coordinates[longtitude, latitude];
+        var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/light-v10',
+        center:locate,
+        zoom: 10,
+        });
+
+        // code from the next step will go here!
+
+    </script>
 @endsection

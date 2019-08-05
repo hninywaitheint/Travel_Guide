@@ -2,51 +2,34 @@
 @extends('frontend.main')
 @section('content')
 
-<div class="container-fluid">
-        <div class="row">
-                <div class="col-sm">
-                    <h1>Travel Guide for Myanmar</h1>
-                </div>
-                <div class="col-sm">
-                    <nav class="navbar navbar-expand-lg navbar-light">
-                        <div class="collapse navbar-collapse">
-                            <ul class="navbar-nav mr-auto">
-                                <li class="navbar-item active">
-                                    <a class="nav-link" href="{{url('mainpage')}}">Home <span class="sr-only">(current)</span></a>
-                                </li>&nbsp;&nbsp;
-                                <li class="navbar-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Dropdown
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            {{-- <a class="dropdown-item" href="{{url('action')}}">Yangon</a>
-                                            <a class="dropdown-item" href="{{url('action')}}">Mandalay</a>
-                                            <a class="dropdown-item" href="{{url('action')}}">Bago</a>
-                                            <a class="dropdown-item" href="{{url('action')}}">Sagaing</a>
-                                            <a class="dropdown-item" href="{{url('action')}}">Magway</a>
-                                            <a class="dropdown-item" href="{{url('action')}}">Tanintharyi</a>
-                                            <a class="dropdown-item" href="{{url('action')}}">Ayeyarwady</a>
-                                            <a class="dropdown-item" href="{{url('action')}}">Kachin</a>
-                                            <a class="dropdown-item" href="{{url('action')}}">Kayar</a>
-                                            <a class="dropdown-item" href="{{url('action')}}">Kayin</a>
-                                            <a class="dropdown-item" href="{{url('action')}}">Chin</a>
-                                            <a class="dropdown-item" href="{{url('action')}}">Mon</a>
-                                            <a class="dropdown-item" href="{{url('action')}}">Rachine</a>
-                                            <a class="dropdown-item" href="{{url('action')}}">Shan</a> --}}
-                                            @foreach ($divisions as $item)
-                                                <a href="{{url('frontend/action', $item->id)}}" class="dropdown-item">{{$item->division_Name}}</a>
-                                            @endforeach
-                                    </div>
-                                </li>&nbsp;&nbsp;
-                                <li class="navbar-item active">
-                                    <a class="nav-link" href="{{url('about')}}">About me</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Travel Guide for Myanmar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Division/State
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                @foreach ($divisions as $item)
+                <a href="{{url('frontend/action', $item->id)}}" class="dropdown-item">{{$item->division_Name}}</a>
+            @endforeach
+          </div>
+        </li>
+        <li class="navbar-item active">
+                <a class="nav-link" href="{{url('about')}}">About me</a>
+            </li>
+      </ul>
+    </div>
+</nav>
 
-            </div>
+<div class="container-fluid">
 
             <div class="row">
                 <div class="col-sm-6 offset-sm-3">
@@ -110,11 +93,11 @@
             var locate = new google.maps.LatLng(latitude,longtitude);
           map = new google.maps.Map(document.getElementById('map'), {
             center: locate,
-            zoom: 8
+            zoom: 15
           });
         }
       </script>
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCB_oTREnz7oebRDP_8w45z1DhoVCSTUBo&callback=initMap" async defer></script><br><br>
+      {{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCB_oTREnz7oebRDP_8w45z1DhoVCSTUBo&callback=initMap" async defer></script><br><br> --}}
 
       <div></div>
 @endsection

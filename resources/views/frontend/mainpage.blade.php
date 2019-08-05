@@ -36,7 +36,7 @@
         </div>
     </div> --}}
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="#">Travel Guide for Myanmar</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
@@ -123,7 +123,7 @@
     <div class="container-fluid"> ￼	￼
         <div class="row">
             @foreach ($randomimg as $content)
-                <div class="col-md-4">
+                {{-- <div class="col-md-4">
                     <a href="{{url('frontend/twocontent',$content->id)}}">
                         <div class="card-group" >
                             <div id='action' style="background-image: url('{{$content->img}}')">
@@ -135,6 +135,18 @@
                             </div>
                         </div>
                     </a>
+                </div> --}}
+
+                <div class="card" style="width: 18rem;margin-left:10%">
+                    <a href="{{url('frontend/twocontent',$content->id)}}">
+                        <div class="card-img-top" style="background-image: url('{{$content->img}}')"></div>
+                        <div class="card-body">
+                            <h5>{{$content->placeName}}</h5><br>
+                            {{$content->Category}}<br>
+                            {{$content->division_Name}}
+                        </div>
+                    </a>
+
                 </div>
 
             @endforeach
@@ -143,3 +155,15 @@
 
 </div>
 @endsection
+
+
+{{-- <div class="col-md-4">
+    <a href="#">
+        <div class="card" style="width: 18rem;margin-left:10%">
+            <img src="images/mandalay/mandalay.jpg" class="card-img-top" alt="Mandalay">
+            <div class="card-body">
+                <h5 class="card-title">Mandalay Division</h5>
+            </div>
+        </div>
+    </a>
+</div> --}}
