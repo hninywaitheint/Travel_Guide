@@ -123,7 +123,7 @@
     <div class="container-fluid"> ￼	￼
         <div class="row">
             @foreach ($randomimg as $content)
-                {{-- <div class="col-md-4">
+                <div class="col-md-4">
                     <a href="{{url('frontend/twocontent',$content->id)}}">
                         <div class="card-group" >
                             <div id='action' style="background-image: url('{{$content->img}}')">
@@ -135,9 +135,9 @@
                             </div>
                         </div>
                     </a>
-                </div> --}}
+                </div>
 
-                <div class="card" style="width: 18rem;margin-left:10%">
+                {{-- <div class="card" style="width: 18rem;margin-left:10%">
                     <a href="{{url('frontend/twocontent',$content->id)}}">
                         <div class="card-img-top" style="background-image: url('{{$content->img}}')"></div>
                         <div class="card-body">
@@ -147,7 +147,7 @@
                         </div>
                     </a>
 
-                </div>
+                </div> --}}
 
             @endforeach
         </div>

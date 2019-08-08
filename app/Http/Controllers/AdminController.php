@@ -14,6 +14,10 @@ use App\loginuser;
 use App\twocontent;
 use App\placenameTable;
 use App\twocontentdetail;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use phpDocumentor\Reflection\Types\Null_;
+
 
 class AdminController extends Controller
 {
@@ -44,7 +48,12 @@ class AdminController extends Controller
         ->get();
         // $editdata = placenames::find($id);
         // dd($display->count());
-        $two_content = DB::table('twocontents')->get();
+        // $two_content = DB::table('twocontentdetails')->get();
+
+        $two_content = DB::table('twocontentdetails')->get();
+        // ->join('placename_tables', 'placename_tables.id', '=', 'twocontentdetails.pid')
+        // ->select('twocontentdetails.*')
+        // ->where('plcename_tables.id', '=', 'twocontentdetails.pid')->get();
         return view('backend.index', compact('display','two_content'));
         // return view('backend.index', compact('display'));
         // echo $two_content;
@@ -89,55 +98,15 @@ class AdminController extends Controller
 
         ]);
 
-        // $categoryMatch =  DB::table('placename_tables')
-        // ->join('categories', 'categories.id', '=', 'placename_tables.cid')
-        // ->select('placename_tables.*', 'categories.*');
-
-
-
-        // $adddata = DB::table('placename_tables')
-        // ->join('division_tables', 'division_tables.id', '=', 'placename_tables.did')
-        // ->join('categories', 'categories.id', '=', 'placename_tables.cid')
-        // // ->join('twocontents', 'placename_tables.id', '=', 'twocontents.pid')
-        // ->select('placename_tables.*','division_tables.*', 'categories.*')
-        // // ->where('placename_tables.id', '=', $id)
-        // ->get();
-
         $division = DB::table('division_tables')->get();
-        // echo $division;
-
-        $category = DB::table('categories')->get();
-
-        $categoryName = $request->Category;
         $divisionName = $request->division_Name;
 
-$placename = DB::table('placename_tables')->get();
+        $category = DB::table('categories')->get();
+         $categoryName = $request->Category;
 
 
 
-        // echo $adddata->toJson();
-
-        // foreach($adddata as $add){
-            // echo $add->division_Name . ';' . $add->Category . ' === ' . $categoryName . '+' . $divisionName . '<br>';
-            // if($add->Category == $categoryName && $add->division_Name == $divisionName){
-                // $image_one = $request->file('img_one');
-                // $image_two = $request->file('img_two');
-                // $image_three = $request->file('img_three');
-
-                // $extension_one = $image_one->getClientOriginalExtension();
-                // $extension_two = $image_two->getClientOriginalExtension();
-                // $extension_three = $image_three->getClientOriginalExtension();
-
-                // request()->image_one->move(public_path('images'),$image_one->getClientOriginalName());
-                // request()->image_two->move(public_path('images'),$image_two->getClientOriginalName());
-                // request()->image_three->move(public_path('images'),$image_three->getClientOriginalName());
-
-                // echo "yout tal";
-                // $editdatas =placename::create();
-
-
-
-        // $placenameTable->did = $request->get('division_Name');
+        $placename = DB::table('placename_tables')->get();
         $placenameTable = new placenameTable();
         $twocontentdetails = new twocontentdetail();
         foreach($division as $div)
@@ -151,31 +120,62 @@ $placename = DB::table('placename_tables')->get();
                 $placenameTable->cid = $cat->id;
 
             }
+            $placenameTable->placeName = $request->get('placeName');
+        // 's3' => [        // 's3' => [
+        //     'driver' => 's3',
+        //     'key' => env('AWS_ACCESS_KEY_ID'),
+        //     'secret' => env('AWS_SECRET_ACCESS_KEY'),
+        //     'region' => env('AWS_DEFAULT_REGION'),
+        //     'bucket' => env('AWS_BUCKET'),
+        //     'url' => env('AWS_URL'),
+        // ]
+        //     'driver' => 's3',
+        //     'key' => env('AWS_ACCESS_KEY_ID'),
+        //     'secret' => env('AWS_SECRET_ACCESS_KEY'),
+        //     'region' => env('AWS_DEFAULT_REGION'),
+        //     'bucket' => env('AWS_BUCKET'),
+        //     'url' => env('AWS_URL'),
+        // ]
+            $placenameTable->img = $request->get('img_one');
 
 
 
 
-        $placenameTable->placeName = $request->get('placeName');
-        // $placenameTable->cid = $request->get('Category');
+            // $image_one = $request->file('image_one');
+            // $extension = $image_one->getClientOriginalExtension();
+            // request()->image_one->move(public_path('images'), $image_one->getClientOriginalName());
 
-        $placenameTable->img = $request->get('img_one');
-        $placenameTable->placename_lat =  $request->get('lat');
-        $placenameTable->placeName_long =  $request->get('long');
-        $placenameTable->save();
-        // $two_content =  twocontent::create();
-        // $twocontent->first()->update(['img' => 'image_two']);
-        // $twocontent->last()->update(['img' => 'image_three']);
- foreach($placename as $pname)
-
-        $twocontentdetails->pid = $pname->id+1;
-        $twocontentdetails->img1 = $request->get('img_two');
-        $twocontentdetails->content1 = $request->get('content1');
-        $twocontentdetails->img2 = $request->get('img_three');
-        $twocontentdetails->content2 = $request->get('content2');
-        $twocontentdetails->save();
+            // $placenameTable->img = $image_one->getClientOriginalName();
 
 
 
+            $placenameTable->placename_lat =  $request->get('lat');
+            $placenameTable->placeName_long =  $request->get('long');
+            $placenameTable->save();
+
+               //
+        foreach($placename as $pname)
+            $twocontentdetails->pid = $pname->id+1;
+
+
+            // $image_two = $request->file('image_two');
+            // $extension = $image_two->getClientOriginalExtension();
+            // request()->image_two->move(public_path('images'), $image_two->getClientOriginalName());
+            // $twocontentdetails->img = $image_two->getClientOriginalName();
+
+            $twocontentdetails->img1 = $request->get('img_two');
+            $twocontentdetails->content1 = $request->get('content1');
+            $twocontentdetails->img2 = $request->get('img_three');
+
+
+
+            // $image_three = $request->file('image_three');
+            // $extension = $image_three->getClientOriginalExtension();
+            // request()->image_three->move(public_path('images'), $image_three->getClientOriginalName());
+            // $twocontentdetails->img = $image_three->getClientOriginalName();
+
+            $twocontentdetails->content2 = $request->get('content2');
+            $twocontentdetails->save();
 
         return redirect('/backend/index')->with('success','Contact Updates');
 
@@ -210,6 +210,12 @@ $placename = DB::table('placename_tables')->get();
         // ->where('id', '=', $id)->pluck('pid');
         // $twocontent = $twocontent[0];
 
+        $detailcontent = DB::table('twocontentdetails')
+        ->select('pid')
+        ->where('pid', '=', $id)->pluck('pid');
+        $detailcontent = $detailcontent[0];
+
+
         $editdataa = DB::table('placename_tables')
         ->join('division_tables', 'division_tables.id', '=', 'placename_tables.did')
         ->join('categories', 'categories.id', '=', 'placename_tables.cid')
@@ -225,12 +231,19 @@ $placename = DB::table('placename_tables')->get();
         $category = DB::table('categories')
         ->select('categories.*')->get();
 
-         $twocontent = DB::table('twocontents')->get();
+         $twocontent[] = DB::table('twocontentdetails')
+         ->select('twocontentdetails.*')
+         ->where('twocontentdetails.pid', '=', $detailcontent)
+         ->first();
+
+         $twocontents = $twocontent[0];
+
+        //  echo $twocontents;
 
 
 
-        // echo $twocontent;
-        return view('backend.edit', compact(['editdata','division','category']));
+        // echo $editdataa;
+         return view('backend.edit', compact(['editdata','division','category','twocontents']));
 
 //*********************************************************************************************************88
         // $editdata = DB::table('placenames')->find($id);
@@ -271,13 +284,19 @@ Environment & details:
             'img_one' => 'required',
             'img_two' => 'required',
             'img_three' => 'required',
-            't' => 'required'
+            'content1' => 'required',
+            'content2' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required'
+
         ]);
          $editdatas =placenameTable::find($id);
 
         $editdatas->placeName = $request->get('placeName');
         $editdatas->cid = $request->get('Category');
         $editdatas->did = $request->get('division_Name');
+
+
 
         //  if($request->get('img_one') != null){
         //     $editdatas->img = $request->get('img_one');
@@ -286,26 +305,79 @@ Environment & details:
         if($request->hasFile('image_one')){
             $image = $request->file('image_one');
             $extension = $image->getClientOriginalName();
+
+            // $filename = time().'.'.$extension;
+            // $image->move('images/', $filename);
+            // $editdatas->img = $filename;
+
             request()->image_one->move(public_path('images'), $image->getClientOriginalName());
             $editdatas->img = $image->getClientOriginalName();
         }
 
+
+
+        // $image = Input::file('image');
+        // $filename  = time() . '.' . $editdatas->getClientOriginalExtension();
+        // $path = public_path('images/' . $filename);
+        // Image::make($editdatas->getRealPath())->resize(468, 249)->save($path);
+        // $editdatas->image = 'img/products/'.$filename;
+        // $product->save();
+
+
+
+        $editdatas->placename_lat = $request->get('latitude');
+        $editdatas->placeName_long = $request->get('longitude');
         $editdatas->save();
-        $two_content =  twocontent::where('pid', '=', $id)->get();
-        $two_content->first()->update(['img' => 'image_one']);
-        $two_content->last()->update(['img' => 'image_two']);
-
-        $editdatas->latitude = $request->get('placename_lat');
-        $editdatas->longitude = $request->get('placeName_long');
 
 
+         $two_content =  twocontentdetail::where('pid', '=', $id)->first();
+         $two_content->content1 = $request->get('content1');
+         $two_content->content2 = $request->get('content2');
+         $two_content->save();
 
 
-        return redirect('/backend/index')->with('success','Contact Updates');
+         if($request->hasFile('image_two')) {
+            $image = $request->file('image_two');
+            $filename = $image->getClientOriginalName();
+            $image->move(public_path('images'), $filename);
+            $two_content->img1 = $request->file('image_two')->getClientOriginalName();
+        }
+
+        $two_content->save();
+
+        //  $two_content->first()->update(['img1' => 'image_one']);
+        $two_content->first()->update(['img2' => 'image_two']);
+
+
+        //  $two_content->img1 = $request->get('imgage_two');
+        // $two_content->img2 = $request->get('image_three');
+
+
+
+
+
+        // $two_content->update();
+
+
+
+        // echo "b";
+        // $two_content->img1 = $request->get('img1');
+        // $two_content->img2 = $request->get('img2');
+        // $two_content->update();
+
+
+
+
+
+
+// echo $two_content;
+
+
+        // return redirect('/backend/index')->with('success','Contact Updates');
 
         // $editdatas->placeName = $request->get('placeName')->save($editdatas);
 
-        //  return redirect('backend.edit')->with('success','Contact Updates');
+         return redirect('/backend/index')->with('success','Contact Updates');
 
 
     }
@@ -319,10 +391,41 @@ Environment & details:
     public function destroy($id)
     {
        $del= placenameTable::find($id);
-    //    dd('it come here');
-       $del->delete();
-    //    return view('backend.index', compact('display'));
+
+    // $place = DB::table('placename_tables')->find($id);
+    // // return view('backend.index', compact('display'));
+
+    $detailcontent = DB::table('twocontentdetails')
+        ->select('pid')
+        ->where('pid', '=', $id)->pluck('pid');
+        $detailcontent = $detailcontent[0];
+
+        DB::delete('delete from twocontentdetails where pid = ? ',[$id]);
+        $del->delete();
+
+
+        // $del = DB::table('placename_tables')
+        // ->join('twocontentdetails', 'twocontentdetails.pid', '=', 'placename_tables.id')
+        // // ->delete('placename_tables.*', 'twocontentdetails.*')
+        // // ->from('placename_tables', 'twocontentdetails')
+        // ->where('placename_tables.id', '=', $detailcontent)
+        // ->where('twocontentdetails.pid', '=', $detailcontent)
+        // ->delete();
+// $del = DB::table('placename_tables')->join('twocontentdetails','twocontentdetails.pid', '=', 'placename_tables.id')
+// ->find($id);
+//      $del->delete();
+
+// DB::delete('delete from placename_tables,twocontentdetails where placename_tables.id = ? ',[$detailcontent]);
+
 
         return redirect('/backend/index')->with('success','Content Delete');
     }
+    // public static function boot()
+// {
+//     parent::boot();
+
+//     static::deleted(function($id){
+//         $id->twocontentdetails()->delete();
+//     });
+// }
 }

@@ -64,18 +64,44 @@
             @endif
         </div>
 
+
+
         <div class="form-group">
             <label for="exampleFormControlFile1">Image-2</label>
-            <input type="file" name="img_two" class="form-control-file" id="exampleFormControlFile1" value={{$editdata->img}}>
+            <input type="file" name="img_two" class="form-control-file" id="exampleFormControlFile1" value={{$twocontents->img1}}>
+            @if ("images/{{ $twocontents->img1}}")
+                <img src="{{url('images/' . $twocontents->img1)}}" style="width: 40px; height: 40px"/>
+            @else
+                <p>Image Not Found</p>
+            @endif
         </div>
 
         <div class="form-group">
             <label for="exampleFormControlFile1">Image-3</label>
-            <input type="file" name="img_three" class="form-control-file" id="exampleFormControlFile1" value={{$editdata->img}}>
+            <input type="file" name="img_three" class="form-control-file" id="exampleFormControlFile1" value={{$twocontents->img2}}>
+            @if ("images/{{ $twocontents->img2}}")
+                <img src="{{url('images/' . $twocontents->img2)}}" style="width: 40px; height: 40px"/>
+            @else
+                <p>Image Not Found</p>
+            @endif
         </div>
+
+
+        {{-- <div class="form-group">
+            <label for="exampleFormControlFile1">Image</label>
+            <input type="file" name="image_one" id="" class="form-control-file" placeholder="" value={{$editdata->img}}>
+            <div class="custom-file-label">Choose File</div>
+          </div> --}}
+
+
         <div class="form-group">
-            <label for="exampleFormControlTextarea1">Content</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" name="t" rows="3" value={{$editdata->placeName}}></textarea>
+            <label for="exampleFormControlTextarea1">Content-1</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" name="content1" rows="3" value="{{$twocontents->content1}}">{{$twocontents->content1}}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Content-2</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" name="content2" rows="3" value={{$twocontents->content2}}>{{$twocontents->content2}}</textarea>
         </div>
 
         <div class="form-group">

@@ -53,9 +53,17 @@
           <td>{{$content->img}}</td>
           @foreach ($two_content as $twocontent)
             @if ($twocontent->pid  == $content->id)
-              <td>{{$twocontent->img}}</td>
+              <td>{{$twocontent->img1}}</td>
+              <td>{{$twocontent->img2}}</td>
+
             @endif
           @endforeach
+
+          {{-- @if ($two_content->pid  == $content->id)
+              <td>{{$two_content->img1}}</td>
+            @endif --}}
+
+            {{-- <td>{{$two_content->img1}}</td> --}}
 
           @foreach ($two_content as $twocontent)
           @if ($twocontent->pid  == $content->id)
